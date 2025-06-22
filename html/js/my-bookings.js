@@ -44,19 +44,12 @@ function updateNavbar() {
 
 // Load bookings data
 function loadBookings() {
-    // Get all bookings from localStorage
     allBookings = getBookings();
     
-    // Filter bookings for current user
-    filteredBookings = allBookings.filter(booking => 
-        booking.customerId === currentUser.id || 
-        booking.customerEmail === currentUser.email
-    );
+    // Filter bookings for the current user
+    filteredBookings = allBookings.filter(booking => booking.userId === currentUser.id);
     
-    // Update statistics
     updateStatistics();
-    
-    // Render bookings
     renderBookings();
 }
 
@@ -79,13 +72,13 @@ function getBookings() {
 // Update statistics
 function updateStatistics() {
     const pending = filteredBookings.filter(b => b.status === 'pending').length;
-    const active = filteredBookings.filter(b => b.status === 'active').length;
-    const completed = filteredBookings.filter(b => b.status === 'completed').length;
+    const accepted = filteredBookings.filter(b => b.status === 'accepted').length;
+    const finished = filteredBookings.filter(b => b.status === 'finished').length;
     const total = filteredBookings.length;
     
     document.getElementById('pendingCount').textContent = pending;
-    document.getElementById('activeCount').textContent = active;
-    document.getElementById('completedCount').textContent = completed;
+    document.getElementById('activeCount').textContent = accepted;
+    document.getElementById('completedCount').textContent = finished;
     document.getElementById('totalCount').textContent = total;
 }
 
@@ -119,25 +112,27 @@ function renderBookings() {
 
 // Create booking card HTML
 function createBookingCard(booking) {
+    const vehicles = getVehicles();
+    const vehicle = vehicles.find(v => v.id == booking.vehicleId);
+
     const statusText = getStatusText(booking.status);
     const statusClass = booking.status;
-    const canCancel = booking.status === 'pending' || booking.status === 'confirmed';
-    const canViewDetails = true;
-    
+    const canCancel = booking.status === 'pending';
+
     return `
         <div class="booking_card" data-booking-id="${booking.id}">
             <div class="booking_header">
                 <div class="booking_info">
-                    <h4>${booking.vehicleName}</h4>
+                    <h4>${vehicle ? vehicle.name : 'Mobil tidak diketahui'}</h4>
                     <p>Booking ID: ${booking.id}</p>
                 </div>
                 <span class="booking_status ${statusClass}">${statusText}</span>
             </div>
             
             <div class="booking_details">
-                <div class="detail_item">
+                 <div class="detail_item">
                     <i class="fas fa-calendar"></i>
-                    <span>Tanggal Sewa: <strong>${formatDate(booking.startDate)} - ${formatDate(booking.endDate)}</strong></span>
+                    <span>Tanggal Sewa: <strong>${formatDate(booking.bookingDates.start)} - ${formatDate(booking.bookingDates.end)}</strong></span>
                 </div>
                 <div class="detail_item">
                     <i class="fas fa-clock"></i>
@@ -149,36 +144,19 @@ function createBookingCard(booking) {
                 </div>
                 <div class="detail_item">
                     <i class="fas fa-calendar-plus"></i>
-                    <span>Tanggal Booking: <strong>${formatDate(booking.bookingDate)}</strong></span>
+                    <span>Tanggal Booking: <strong>${formatDate(booking.bookedAt)}</strong></span>
                 </div>
             </div>
             
-            ${booking.notes ? `
-                <div class="booking_notes" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 3px solid #fe5b29;">
-                    <strong><i class="fas fa-sticky-note"></i> Catatan:</strong>
-                    <p style="margin: 5px 0 0 0; color: #666;">${booking.notes}</p>
-                </div>
-            ` : ''}
-            
             <div class="booking_actions">
-                ${canViewDetails ? `
-                    <button class="btn btn-primary" onclick="viewBookingDetails('${booking.id}')">
-                        <i class="fas fa-eye"></i> Detail
-                    </button>
-                ` : ''}
-                
+                <button class="btn btn-primary" onclick="viewBookingDetails('${booking.id}')">
+                    <i class="fas fa-eye"></i> Detail
+                </button>
                 ${canCancel ? `
                     <button class="btn btn-danger" onclick="cancelBooking('${booking.id}')">
                         <i class="fas fa-times"></i> Batalkan
                     </button>
                 ` : ''}
-                
-                ${booking.status === 'active' ? `
-                    <button class="btn btn-success" onclick="completeBooking('${booking.id}')">
-                        <i class="fas fa-check"></i> Selesai
-                    </button>
-                ` : ''}
-                
                 <button class="btn btn-secondary" onclick="printBooking('${booking.id}')">
                     <i class="fas fa-print"></i> Print
                 </button>
@@ -190,11 +168,10 @@ function createBookingCard(booking) {
 // Get status text
 function getStatusText(status) {
     const statusMap = {
-        'pending': 'Pending',
-        'confirmed': 'Dikonfirmasi',
-        'active': 'Aktif',
-        'completed': 'Selesai',
-        'cancelled': 'Dibatalkan'
+        'pending': 'Menunggu Persetujuan',
+        'accepted': 'Diterima',
+        'finished': 'Selesai',
+        'rejected': 'Ditolak'
     };
     return statusMap[status] || status;
 }
@@ -247,67 +224,24 @@ function cancelBooking(bookingId) {
     if (!confirm('Apakah Anda yakin ingin membatalkan pemesanan ini?')) {
         return;
     }
-    
-    // Find booking
-    const booking = allBookings.find(b => b.id === bookingId);
-    if (!booking) {
-        showAlert('Pemesanan tidak ditemukan!', 'danger');
-        return;
-    }
-    
-    // Check if booking can be cancelled
-    if (booking.status !== 'pending' && booking.status !== 'confirmed') {
-        showAlert('Pemesanan tidak dapat dibatalkan!', 'warning');
-        return;
-    }
-    
-    // Update booking status
-    booking.status = 'cancelled';
-    
-    // Update vehicle status back to available
-    updateVehicleStatus(booking.vehicleId, 'available');
-    
-    // Save updated bookings
-    localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(allBookings));
-    
-    // Reload bookings
-    loadBookings();
-    
-    showAlert('Pemesanan berhasil dibatalkan!', 'success');
-}
 
-// Complete booking
-function completeBooking(bookingId) {
-    if (!confirm('Apakah Anda yakin ingin menyelesaikan pemesanan ini?')) {
-        return;
+    const bookings = getBookings();
+    const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+
+    if (bookingIndex !== -1) {
+        // Make the vehicle available again
+        updateVehicleStatus(bookings[bookingIndex].vehicleId, 'available');
+        
+        // Remove the booking
+        bookings.splice(bookingIndex, 1);
+        localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(bookings));
+
+        // Reload the UI
+        loadBookings();
+        showAlert('Pemesanan berhasil dibatalkan!', 'success');
+    } else {
+        showAlert('Gagal membatalkan pemesanan. Data tidak ditemukan.', 'error');
     }
-    
-    // Find booking
-    const booking = allBookings.find(b => b.id === bookingId);
-    if (!booking) {
-        showAlert('Pemesanan tidak ditemukan!', 'danger');
-        return;
-    }
-    
-    // Check if booking is active
-    if (booking.status !== 'active') {
-        showAlert('Hanya pemesanan aktif yang dapat diselesaikan!', 'warning');
-        return;
-    }
-    
-    // Update booking status
-    booking.status = 'completed';
-    
-    // Update vehicle status back to available
-    updateVehicleStatus(booking.vehicleId, 'available');
-    
-    // Save updated bookings
-    localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(allBookings));
-    
-    // Reload bookings
-    loadBookings();
-    
-    showAlert('Pemesanan berhasil diselesaikan!', 'success');
 }
 
 // View booking details
@@ -461,7 +395,7 @@ function showAlert(message, type = 'info') {
 
 // Logout function
 function logout() {
-    localStorage.removeItem('user');
     sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
     window.location.href = 'index.html';
 } 

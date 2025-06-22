@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Basic metas -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manajemen Pesanan - Trator</title>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="index.html"
+            ><img src="images/logo.png"
+          /></a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="manage-vehicles.html">Kelola Mobil</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="manage-orders.html">Kelola Pesanan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="manage-users.html">Kelola Pengguna</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="logout()">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="contact_section layout_padding">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="row">
+          <div class="col-md-12 text-center" style="margin-bottom: 40px">
+            <h1 class="contact_taital">Manajemen Pesanan</h1>
+            <p class="gallery_text">
+              Konfirmasi, tolak, atau selesaikan pesanan pelanggan
+            </p>
+            <a href="admin-dashboard.html" class="btn btn-secondary mt-3"
+              ><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a
+            >
+          </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div
+          class="card"
+          style="
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+          "
+        >
+          <div class="card-body" style="padding: 30px">
+            <div class="row">
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchOrder"
+                  placeholder="Cari berdasarkan ID, nama mobil, atau pengguna..."
+                  style="
+                    padding: 12px 15px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                  "
+                />
+              </div>
+              <div class="col-md-4">
+                <select
+                  class="form-control"
+                  id="filterStatus"
+                  style="
+                    padding: 12px 15px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                  "
+                >
+                  <option value="">Semua Status</option>
+                  <option value="pending">Menunggu Persetujuan</option>
+                  <option value="accepted">Diterima</option>
+                  <option value="finished">Selesai</option>
+                  <option value="rejected">Ditolak</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button
+                  class="btn btn-secondary btn-block"
+                  onclick="resetFilters()"
+                  style="padding: 12px"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div
+          class="card"
+          style="
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          "
+        >
+          <div class="card-body" style="padding: 30px">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th>ID Pesanan</th>
+                    <th>Pengguna</th>
+                    <th>ID Mobil</th>
+                    <th>Mobil</th>
+                    <th>Tanggal Sewa</th>
+                    <th>Total Harga</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <div
+              id="noDataMessage"
+              class="text-center"
+              style="display: none; padding: 40px"
+            >
+              <i
+                class="fas fa-file-invoice-dollar"
+                style="font-size: 60px; color: #ccc; margin-bottom: 20px"
+              ></i>
+              <h4 style="color: #666">Tidak ada data pesanan</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/manage-orders.js"></script>
+  </body>
+</html>

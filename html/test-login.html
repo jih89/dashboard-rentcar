@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Test Login Flow - Trator</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+      .test-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .test-button {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .btn-primary {
+        background-color: #fe5b29;
+        color: white;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+      .btn-success {
+        background-color: #28a745;
+        color: white;
+      }
+      .btn-danger {
+        background-color: #dc3545;
+        color: white;
+      }
+      .status {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .status.success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .status.error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      .status.info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h2>Test Login Flow</h2>
+      <p>
+        This page helps test the login functionality and identify any infinite
+        loops.
+      </p>
+
+      <div id="status" class="status info">Ready to test</div>
+
+      <div>
+        <button class="test-button btn-primary" onclick="testCustomerLogin()">
+          Test Customer Login
+        </button>
+        <button class="test-button btn-secondary" onclick="testAdminLogin()">
+          Test Admin Login
+        </button>
+        <button class="test-button btn-success" onclick="testLogout()">
+          Test Logout
+        </button>
+        <button class="test-button btn-danger" onclick="clearStorage()">
+          Clear Storage
+        </button>
+      </div>
+
+      <div style="margin-top: 20px">
+        <h4>Current Status:</h4>
+        <div id="currentStatus"></div>
+      </div>
+
+      <div style="margin-top: 20px">
+        <h4>Test Results:</h4>
+        <div id="testResults"></div>
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Import functions from login.js
+      function getCurrentUser() {
+        const user =
+          localStorage.getItem("user") || sessionStorage.getItem("user");
+        return user ? JSON.parse(user) : null;
+      }
+
+      function updateStatus(message, type = "info") {
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent = message;
+        statusDiv.className = `status ${type}`;
+      }
+
+      function updateCurrentStatus() {
+        const user = getCurrentUser();
+        const statusDiv = document.getElementById("currentStatus");
+
+        if (user) {
+          statusDiv.innerHTML = `
+                    <strong>Logged in as:</strong> ${user.name}<br>
+                    <strong>Email:</strong> ${user.email}<br>
+                    <strong>Role:</strong> ${user.role}<br>
+                    <strong>Storage:</strong> ${
+                      localStorage.getItem("user")
+                        ? "localStorage"
+                        : "sessionStorage"
+                    }
+                `;
+        } else {
+          statusDiv.innerHTML = "<strong>Not logged in</strong>";
+        }
+      }
+
+      function addTestResult(message, type = "info") {
+        const resultsDiv = document.getElementById("testResults");
+        const timestamp = new Date().toLocaleTimeString();
+        resultsDiv.innerHTML += `<div class="status ${type}">[${timestamp}] ${message}</div>`;
+      }
+
+      function testCustomerLogin() {
+        updateStatus("Testing customer login...", "info");
+        addTestResult("Testing customer login...", "info");
+
+        const customerUser = {
+          email: "customer@trator.com",
+          password: "customer123",
+          name: "John Doe",
+          role: "customer",
+          phone: "081234567890",
+        };
+
+        localStorage.setItem("user", JSON.stringify(customerUser));
+        updateCurrentStatus();
+
+        setTimeout(() => {
+          updateStatus("Customer login successful!", "success");
+          addTestResult("Customer login successful!", "success");
+
+          // Test redirect
+          setTimeout(() => {
+            addTestResult("Redirecting to dashboard...", "info");
+            window.location.href = "dashboard.html";
+          }, 1000);
+        }, 500);
+      }
+
+      function testAdminLogin() {
+        updateStatus("Testing admin login...", "info");
+        addTestResult("Testing admin login...", "info");
+
+        const adminUser = {
+          email: "admin@trator.com",
+          password: "admin123",
+          name: "Admin Trator",
+          role: "admin",
+          phone: "081234567891",
+        };
+
+        localStorage.setItem("user", JSON.stringify(adminUser));
+        updateCurrentStatus();
+
+        setTimeout(() => {
+          updateStatus("Admin login successful!", "success");
+          addTestResult("Admin login successful!", "success");
+
+          // Test redirect
+          setTimeout(() => {
+            addTestResult("Redirecting to admin dashboard...", "info");
+            window.location.href = "admin-dashboard.html";
+          }, 1000);
+        }, 500);
+      }
+
+      function testLogout() {
+        updateStatus("Testing logout...", "info");
+        addTestResult("Testing logout...", "info");
+
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
+        updateCurrentStatus();
+
+        setTimeout(() => {
+          updateStatus("Logout successful!", "success");
+          addTestResult("Logout successful!", "success");
+        }, 500);
+      }
+
+      function clearStorage() {
+        updateStatus("Clearing storage...", "info");
+        addTestResult("Clearing storage...", "info");
+
+        localStorage.clear();
+        sessionStorage.clear();
+        updateCurrentStatus();
+
+        setTimeout(() => {
+          updateStatus("Storage cleared!", "success");
+          addTestResult("Storage cleared!", "success");
+        }, 500);
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCurrentStatus();
+        addTestResult("Test page loaded", "info");
+      });
+    </script>
+  </body>
+</html>

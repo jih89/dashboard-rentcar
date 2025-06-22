@@ -1,10 +1,8 @@
-// Fungsi untuk menangani admin dashboard
+// Fungsi untuk memuat data dashboard admin
 document.addEventListener('DOMContentLoaded', function() {
-    // Cek apakah user sudah login dan memiliki role admin
-    const currentUser = getCurrentUser();
-    
-    if (!currentUser || currentUser.role !== 'admin') {
-        alert('Anda tidak memiliki akses ke halaman ini. Silakan login sebagai admin.');
+    // Cek apakah user sudah login dan adalah admin
+    const user = getCurrentUser();
+    if (!user || user.role !== 'admin') {
         window.location.href = 'login.html';
         return;
     }
@@ -12,8 +10,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load dashboard data
     loadDashboardData();
     
-    // Update navbar
+    // Update navbar admin
     updateAdminNavbar();
+    
+    // Refresh data setiap 30 detik
+    setInterval(loadDashboardData, 30000);
+    
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
 });
 
 // Fungsi untuk mendapatkan data user yang sedang login
@@ -26,39 +40,24 @@ function getCurrentUser() {
 function loadDashboardData() {
     // Simulasi loading data
     setTimeout(() => {
-        const vehicles = getVehiclesData();
-        
-        // Update statistics
-        document.getElementById('totalVehicles').textContent = vehicles.length;
-        // Hitung available berdasarkan status
-        const availableCount = vehicles.filter(v => v.status === 'available' || v.available === true).length;
-        document.getElementById('availableVehicles').textContent = availableCount;
-        document.getElementById('totalRentals').textContent = '25'; // Simulasi
-        document.getElementById('totalRevenue').textContent = 'Rp 15.000.000'; // Simulasi
-        
-        // Show empty state if no vehicles
-        if (vehicles.length === 0) {
-            const statsContainer = document.querySelector('.row.mb-4');
-            statsContainer.innerHTML = `
-                <div class="col-12 text-center">
-                    <div class="alert alert-info" style="padding: 40px; margin: 20px 0;">
-                        <i class="fas fa-info-circle" style="font-size: 48px; color: #17a2b8; margin-bottom: 20px;"></i>
-                        <h4 style="color: #17a2b8; margin-bottom: 15px;">Belum Ada Data Mobil</h4>
-                        <p style="font-size: 16px; color: #666; margin-bottom: 20px;">
-                            Silahkan tambahkan data mobil terlebih dahulu untuk memulai
-                        </p>
-                        <a href="manage-vehicles.html" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Tambah Mobil Pertama
-                        </a>
-                    </div>
-                </div>
-            `;
+        loadVehicleData(); // Memuat data kendaraan (termasuk status)
+        loadUserData(); // Panggil fungsi untuk memuat data pengguna
+        loadBookingData(); // Panggil fungsi untuk memuat data booking
+        loadRevenueData(); // Panggil fungsi untuk memuat data pendapatan
+        loadRecentActivities(); // Call the new function
+
+        // Hide loading spinner if it exists
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'none';
         }
         
-        // Hide loading
-        document.getElementById('loadingSpinner').style.display = 'none';
-        document.getElementById('dashboardContent').style.display = 'block';
-    }, 1000);
+        // Show dashboard content if it exists
+        const dashboardContent = document.getElementById('dashboardContent');
+        if (dashboardContent) {
+            dashboardContent.style.display = 'block';
+        }
+    }, 500); // Mengurangi timeout untuk loading lebih cepat
 }
 
 // --- Data Sinkronisasi ---
@@ -89,29 +88,51 @@ function loadVehicleData() {
     try {
         // Ambil data mobil dari localStorage
         const vehicles = getVehiclesData();
-        document.getElementById('totalVehicles').textContent = vehicles.length;
+        
+        // Cek apakah elemen ada sebelum mengubahnya
+        const totalVehiclesElement = document.getElementById('totalVehicles');
+        if (totalVehiclesElement) {
+            totalVehiclesElement.textContent = vehicles.length;
+        }
         
         // Update vehicle status
         updateVehicleStatus(vehicles);
+
+        // Show empty state if no vehicles
+        if (vehicles.length === 0) {
+            const statsContainer = document.querySelector('.row.mb-4');
+            if(statsContainer) {
+                statsContainer.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-info" style="padding: 40px; margin: 20px 0;">
+                            <i class="fas fa-info-circle" style="font-size: 48px; color: #17a2b8; margin-bottom: 20px;"></i>
+                            <h4 style="color: #17a2b8; margin-bottom: 15px;">Belum Ada Data Mobil</h4>
+                            <p style="font-size: 16px; color: #666; margin-bottom: 20px;">
+                                Silahkan tambahkan data mobil terlebih dahulu untuk memulai
+                            </p>
+                            <a href="manage-vehicles.html" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Tambah Mobil Pertama
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
         
     } catch (error) {
         console.error('Error loading vehicle data:', error);
-        document.getElementById('totalVehicles').textContent = '0';
+        const totalVehiclesElement = document.getElementById('totalVehicles');
+        if (totalVehiclesElement) {
+            totalVehiclesElement.textContent = '0';
+        }
     }
 }
 
 // Fungsi untuk load data user
 function loadUserData() {
     try {
-        // Ambil data user dari localStorage
-        const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-        const defaultUsers = [
-            { email: 'customer@trator.com', role: 'customer' },
-            { email: 'admin@trator.com', role: 'admin' }
-        ];
-        
-        const totalUsers = registeredUsers.length + defaultUsers.length;
-        document.getElementById('totalUsers').textContent = totalUsers;
+        const allUsers = getAllUsers();
+        document.getElementById('totalUsers').textContent = allUsers.length;
         
     } catch (error) {
         console.error('Error loading user data:', error);
@@ -121,21 +142,61 @@ function loadUserData() {
 
 // Fungsi untuk load data booking (simulasi)
 function loadBookingData() {
-    // Simulasi data booking
-    const mockBookings = [
-        { id: 1, vehicle: 'Toyota Avanza', customer: 'John Doe', amount: 350000, status: 'active' },
-        { id: 2, vehicle: 'Honda Brio', customer: 'Jane Smith', amount: 250000, status: 'completed' },
-        { id: 3, vehicle: 'BMW X3', customer: 'Mike Johnson', amount: 800000, status: 'active' }
-    ];
-    
-    document.getElementById('totalBookings').textContent = mockBookings.length;
+    const bookings = getBookings();
+    document.getElementById('totalBookings').textContent = bookings.length;
 }
 
 // Fungsi untuk load data revenue (simulasi)
 function loadRevenueData() {
-    // Simulasi total revenue
-    const mockRevenue = 1400000; // Rp 1.400.000
-    document.getElementById('totalRevenue').textContent = formatCurrency(mockRevenue);
+    const bookings = getBookings();
+    const finishedBookings = bookings.filter(booking => booking.status === 'finished');
+    const totalRevenue = finishedBookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+    document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+}
+
+function loadRecentActivities() {
+    const activitiesContainer = document.getElementById('recentActivities');
+    if (!activitiesContainer) return;
+
+    const users = (JSON.parse(localStorage.getItem('registeredUsers')) || []).map(u => ({...u, type: 'user', date: new Date(u.createdAt)}));
+    const bookings = getBookings().map(b => ({...b, type: 'booking', date: new Date(b.bookingDate)}));
+
+    const activities = [...users, ...bookings]
+        .sort((a, b) => b.date - a.date)
+        .slice(0, 5);
+
+    if (activities.length === 0) {
+        activitiesContainer.innerHTML = '<div class="text-center text-muted p-4">No recent activities.</div>';
+        return;
+    }
+
+    activitiesContainer.innerHTML = activities.map(activity => {
+        if (activity.type === 'user') {
+            return `
+                <div class="activity-item" style="padding: 15px 0; border-bottom: 1px solid #eee;">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong style="color: #333;">User baru terdaftar</strong>
+                            <p style="color: #666; margin: 5px 0 0 0;">${activity.email}</p>
+                        </div>
+                        <small style="color: #999;">${new Date(activity.date).toLocaleDateString()}</small>
+                    </div>
+                </div>
+            `;
+        } else { // booking
+            return `
+                <div class="activity-item" style="padding: 15px 0; border-bottom: 1px solid #eee;">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong style="color: #333;">Booking baru</strong>
+                            <p style="color: #666; margin: 5px 0 0 0;">${activity.vehicleName} - ${formatCurrency(activity.totalPrice)}</p>
+                        </div>
+                        <small style="color: #999;">${new Date(activity.date).toLocaleDateString()}</small>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
 }
 
 // Fungsi untuk update vehicle status
@@ -144,10 +205,10 @@ function updateVehicleStatus(vehicles) {
     
     if (!vehicleStatusContainer) return;
     
-    // Simulasi status mobil
-    const availableCount = Math.floor(vehicles.length * 0.6); // 60% available
-    const rentedCount = Math.floor(vehicles.length * 0.3); // 30% rented
-    const maintenanceCount = vehicles.length - availableCount - rentedCount; // 10% maintenance
+    // Hitung status mobil dari data asli
+    const availableCount = vehicles.filter(v => v.status === 'available').length;
+    const rentedCount = vehicles.filter(v => v.status === 'rented').length;
+    const maintenanceCount = vehicles.filter(v => v.status === 'maintenance').length;
     
     vehicleStatusContainer.innerHTML = `
         <div class="status-item" style="padding: 10px 0;">
@@ -207,8 +268,7 @@ function addVehicle() {
 
 // Fungsi untuk kelola users
 function manageUsers() {
-    alert('Fitur Kelola Users akan segera hadir!');
-    // TODO: Implement user management
+    window.location.href = 'manage-users.html';
 }
 
 // Fungsi untuk lihat bookings
@@ -331,21 +391,10 @@ function convertToCSV(data) {
     return csvContent;
 }
 
+const BOOKING_STORAGE_KEY = 'trator_bookings';
+function getBookings() {
+    return JSON.parse(localStorage.getItem(BOOKING_STORAGE_KEY)) || [];
+}
+
 // Event listeners untuk real-time updates
-document.addEventListener('DOMContentLoaded', function() {
-    // Refresh data setiap 30 detik
-    setInterval(loadDashboardData, 30000);
-    
-    // Add hover effects to cards
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.transition = 'transform 0.3s ease';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-}); 
+// REMOVED: Duplicate DOMContentLoaded event listener 

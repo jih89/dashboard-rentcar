@@ -16,6 +16,10 @@ const defaultUsers = [
     }
 ];
 
+// Flag untuk mencegah infinite loop
+let isRedirecting = false;
+let isInitialized = false;
+
 // Fungsi untuk mendapatkan semua user (default + registered)
 function getAllUsers() {
     const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
@@ -24,8 +28,23 @@ function getAllUsers() {
 
 // Fungsi untuk menangani form login
 document.addEventListener('DOMContentLoaded', function() {
+    // Mencegah multiple initialization
+    if (isInitialized) {
+        console.log('Login page already initialized, skipping...');
+        return;
+    }
+    isInitialized = true;
+    
+    console.log('Initializing login page...');
+    
     // Cek status login terlebih dahulu
     checkLoginStatus();
+    
+    // Update navbar hanya jika user sudah login
+    const user = getCurrentUser();
+    if (user) {
+        updateNavbar();
+    }
     
     const loginForm = document.getElementById('loginForm');
     
@@ -90,6 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = 'none';
         });
     });
+    
+    console.log('Login page initialization complete');
 });
 
 // Fungsi untuk validasi email
@@ -188,24 +209,27 @@ function updateNavbar() {
 
 // Fungsi untuk mengecek status login dan redirect otomatis
 function checkLoginStatus() {
+    // Mencegah infinite loop
+    if (isRedirecting) {
+        console.log('Already redirecting, skipping checkLoginStatus...');
+        return;
+    }
+    
     const user = getCurrentUser();
+    console.log('checkLoginStatus called, user:', user);
     
     if (user) {
-        console.log('User sudah login, redirecting to dashboard...');
+        console.log('User sudah login, redirecting to dashboard...', user);
+        isRedirecting = true;
         showAlert('Anda sudah login! Mengalihkan ke dashboard...', 'success');
         
         // Redirect berdasarkan role
         setTimeout(() => {
-            if (user.role === 'admin') {
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                window.location.href = 'dashboard.html';
-            }
+            const targetPage = user.role === 'admin' ? 'admin-dashboard.html' : 'dashboard.html';
+            console.log('Executing redirect to:', targetPage);
+            window.location.href = targetPage;
         }, 1500);
+    } else {
+        console.log('No user logged in, staying on login page');
     }
-}
-
-// Jalankan update navbar saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavbar();
-}); 
+} 

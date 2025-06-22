@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Debug Login - Trator</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <style>
+      .debug-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .debug-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .debug-button {
+        margin: 5px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .btn-primary {
+        background-color: #fe5b29;
+        color: white;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+      .btn-success {
+        background-color: #28a745;
+        color: white;
+      }
+      .btn-danger {
+        background-color: #dc3545;
+        color: white;
+      }
+      .btn-warning {
+        background-color: #ffc107;
+        color: black;
+      }
+      .log-entry {
+        padding: 5px;
+        margin: 2px 0;
+        border-radius: 3px;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .log-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+      .log-success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .log-error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      .log-warning {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="debug-container">
+      <h2>Debug Login Flow</h2>
+      <p>
+        This page helps debug the login functionality and identify infinite
+        loops.
+      </p>
+
+      <div class="debug-section">
+        <h4>Current Status</h4>
+        <div id="currentStatus">Loading...</div>
+      </div>
+
+      <div class="debug-section">
+        <h4>Actions</h4>
+        <button class="debug-button btn-primary" onclick="testCustomerLogin()">
+          Test Customer Login
+        </button>
+        <button class="debug-button btn-secondary" onclick="testAdminLogin()">
+          Test Admin Login
+        </button>
+        <button class="debug-button btn-success" onclick="testLogout()">
+          Test Logout
+        </button>
+        <button class="debug-button btn-danger" onclick="clearStorage()">
+          Clear Storage
+        </button>
+        <button class="debug-button btn-warning" onclick="testRedirect()">
+          Test Redirect
+        </button>
+      </div>
+
+      <div class="debug-section">
+        <h4>Storage Contents</h4>
+        <div id="storageContents">Loading...</div>
+      </div>
+
+      <div class="debug-section">
+        <h4>Debug Log</h4>
+        <div id="debugLog"></div>
+        <button class="debug-button btn-secondary" onclick="clearLog()">
+          Clear Log
+        </button>
+      </div>
+
+      <div class="debug-section">
+        <h4>Navigation</h4>
+        <button class="debug-button btn-primary" onclick="goToLogin()">
+          Go to Login
+        </button>
+        <button class="debug-button btn-primary" onclick="goToDashboard()">
+          Go to Dashboard
+        </button>
+        <button class="debug-button btn-primary" onclick="goToAdminDashboard()">
+          Go to Admin Dashboard
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function getCurrentUser() {
+        const user =
+          localStorage.getItem("user") || sessionStorage.getItem("user");
+        return user ? JSON.parse(user) : null;
+      }
+
+      function updateCurrentStatus() {
+        const user = getCurrentUser();
+        const statusDiv = document.getElementById("currentStatus");
+
+        if (user) {
+          statusDiv.innerHTML = `
+                    <strong>Logged in as:</strong> ${user.name}<br>
+                    <strong>Email:</strong> ${user.email}<br>
+                    <strong>Role:</strong> ${user.role}<br>
+                    <strong>Storage:</strong> ${
+                      localStorage.getItem("user")
+                        ? "localStorage"
+                        : "sessionStorage"
+                    }
+                `;
+        } else {
+          statusDiv.innerHTML = "<strong>Not logged in</strong>";
+        }
+      }
+
+      function updateStorageContents() {
+        const storageDiv = document.getElementById("storageContents");
+        const localStorageData = {};
+        const sessionStorageData = {};
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          localStorageData[key] = localStorage.getItem(key);
+        }
+
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          sessionStorageData[key] = sessionStorage.getItem(key);
+        }
+
+        storageDiv.innerHTML = `
+                <strong>localStorage:</strong><br>
+                <pre>${JSON.stringify(localStorageData, null, 2)}</pre>
+                <br><strong>sessionStorage:</strong><br>
+                <pre>${JSON.stringify(sessionStorageData, null, 2)}</pre>
+            `;
+      }
+
+      function addLog(message, type = "info") {
+        const logDiv = document.getElementById("debugLog");
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = document.createElement("div");
+        logEntry.className = `log-entry log-${type}`;
+        logEntry.textContent = `[${timestamp}] ${message}`;
+        logDiv.appendChild(logEntry);
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+
+      function testCustomerLogin() {
+        addLog("Testing customer login...", "info");
+
+        const customerUser = {
+          email: "customer@trator.com",
+          password: "customer123",
+          name: "John Doe",
+          role: "customer",
+          phone: "081234567890",
+        };
+
+        localStorage.setItem("user", JSON.stringify(customerUser));
+        updateCurrentStatus();
+        updateStorageContents();
+
+        addLog("Customer login successful!", "success");
+      }
+
+      function testAdminLogin() {
+        addLog("Testing admin login...", "info");
+
+        const adminUser = {
+          email: "admin@trator.com",
+          password: "admin123",
+          name: "Admin Trator",
+          role: "admin",
+          phone: "081234567891",
+        };
+
+        localStorage.setItem("user", JSON.stringify(adminUser));
+        updateCurrentStatus();
+        updateStorageContents();
+
+        addLog("Admin login successful!", "success");
+      }
+
+      function testLogout() {
+        addLog("Testing logout...", "info");
+
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
+        updateCurrentStatus();
+        updateStorageContents();
+
+        addLog("Logout successful!", "success");
+      }
+
+      function clearStorage() {
+        addLog("Clearing storage...", "warning");
+
+        localStorage.clear();
+        sessionStorage.clear();
+        updateCurrentStatus();
+        updateStorageContents();
+
+        addLog("Storage cleared!", "success");
+      }
+
+      function testRedirect() {
+        const user = getCurrentUser();
+        if (user) {
+          addLog(`Testing redirect for ${user.role} user...`, "info");
+          const targetPage =
+            user.role === "admin" ? "admin-dashboard.html" : "dashboard.html";
+          addLog(`Would redirect to: ${targetPage}`, "info");
+        } else {
+          addLog("No user logged in, no redirect needed", "info");
+        }
+      }
+
+      function clearLog() {
+        document.getElementById("debugLog").innerHTML = "";
+      }
+
+      function goToLogin() {
+        window.location.href = "login.html";
+      }
+
+      function goToDashboard() {
+        window.location.href = "dashboard.html";
+      }
+
+      function goToAdminDashboard() {
+        window.location.href = "admin-dashboard.html";
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        addLog("Debug page loaded", "info");
+        updateCurrentStatus();
+        updateStorageContents();
+      });
+
+      // Monitor storage changes
+      window.addEventListener("storage", function (e) {
+        addLog(`Storage changed: ${e.key} = ${e.newValue}`, "info");
+        updateCurrentStatus();
+        updateStorageContents();
+      });
+    </script>
+  </body>
+</html>

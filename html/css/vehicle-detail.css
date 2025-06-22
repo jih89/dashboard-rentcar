@@ -98,6 +98,32 @@
     font-weight: 600;
 }
 
+/* Custom button colors for vehicle detail */
+.vehicle-detail-container .btn-primary,
+.vehicle-detail-container .btn-primary:focus,
+.vehicle-detail-container .btn-primary:active {
+    background-color: #fe5b29 !important;
+    border-color: #fe5b29 !important;
+    color: #fff !important;
+    box-shadow: none;
+}
+.vehicle-detail-container .btn-primary:hover {
+    background-color: #d94d1a !important;
+    border-color: #d94d1a !important;
+    color: #fff !important;
+}
+
+.vehicle-detail-container .btn-outline-secondary {
+    color: #fe5b29 !important;
+    border-color: #fe5b29 !important;
+    background: #fff !important;
+}
+.vehicle-detail-container .btn-outline-secondary:hover {
+    background: #fe5b29 !important;
+    color: #fff !important;
+    border-color: #fe5b29 !important;
+}
+
 /* Responsive */
 @media (max-width: 767px) {
     .vehicle-info {

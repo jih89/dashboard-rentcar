@@ -2,7 +2,7 @@
 
 // Constants
 const BOOKING_STORAGE_KEY = 'trator_bookings';
-const VEHICLE_STORAGE_KEY = 'trator_vehicles';
+const VEHICLE_STORAGE_KEY = 'vehiclesData';
 
 // Global variables
 let selectedVehicle = null;
@@ -413,53 +413,36 @@ function submitBooking() {
         return;
     }
     
-    // Get form data
-    const formData = {
-        startDate: document.getElementById('startDate').value,
-        endDate: document.getElementById('endDate').value,
-        customerName: document.getElementById('customerName').value.trim(),
-        customerPhone: document.getElementById('customerPhone').value.trim(),
-        customerEmail: document.getElementById('customerEmail').value.trim(),
-        customerAddress: document.getElementById('customerAddress').value.trim(),
-        bookingNotes: document.getElementById('bookingNotes').value.trim()
-    };
-    
-    // Calculate booking details
-    const start = new Date(formData.startDate);
-    const end = new Date(formData.endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
     // Create booking object
     const booking = {
-        id: 'b' + Date.now(),
+        id: `TRX-${Date.now()}`,
+        userId: currentUser.id,
         vehicleId: selectedVehicle.id,
-        vehicleName: selectedVehicle.name,
-        customerId: currentUser.id || currentUser.email,
-        customerName: formData.customerName,
-        customerEmail: formData.customerEmail,
-        customerPhone: formData.customerPhone,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        totalDays: diffDays,
-        pricePerDay: selectedVehicle.price,
-        totalPrice: diffDays * selectedVehicle.price,
-        status: 'pending',
-        bookingDate: new Date().toISOString(),
-        notes: formData.bookingNotes
+        customer: {
+            name: document.getElementById('customerName').value,
+            email: document.getElementById('customerEmail').value,
+            phone: document.getElementById('customerPhone').value,
+            address: document.getElementById('customerAddress').value
+        },
+        bookingDates: {
+            start: document.getElementById('startDate').value,
+            end: document.getElementById('endDate').value
+        },
+        totalDays: calculateDays(),
+        totalPrice: calculatePrice(),
+        bookedAt: new Date().toISOString(),
+        status: 'pending' // Status: pending, accepted, finished, rejected
     };
     
-    // Save booking
+    // Save booking and update vehicle status
     saveBooking(booking);
-    
-    // Update vehicle status
     updateVehicleStatus(selectedVehicle.id, 'rented');
     
-    // Show success and redirect
-    showSuccess('Pemesanan berhasil! Anda akan diarahkan ke halaman pemesanan Anda.');
+    // Show success message and redirect
+    showSuccess('Pemesanan berhasil! Menunggu konfirmasi dari admin.');
     setTimeout(() => {
         window.location.href = 'my-bookings.html';
-    }, 2000);
+    }, 3000);
 }
 
 // Save booking to localStorage
@@ -555,4 +538,22 @@ function ensureVehicleData() {
             console.error('Booking.js - Error copying data to localStorage:', e);
         }
     }
+}
+
+// Hitung jumlah hari booking
+function calculateDays() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    if (!startDate || !endDate) return 0;
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+}
+
+// Hitung total harga booking
+function calculatePrice() {
+    if (!selectedVehicle) return 0;
+    return calculateDays() * selectedVehicle.price;
 } 

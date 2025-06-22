@@ -145,17 +145,14 @@ function loadVehicleDetail() {
                         
                         <div class="vehicle-actions">
                             ${isAvailable ? `
-                                <button class="btn btn-primary btn-lg me-3">
+                                <a href="booking.html?id=${vehicle.id}" class="btn btn-primary btn-lg me-3">
                                     <i class="fas fa-calendar-plus"></i> Book Now
-                                </button>
+                                </a>
                             ` : `
                                 <button class="btn btn-secondary btn-lg me-3" disabled>
                                     <i class="fas fa-times"></i> Tidak Tersedia
                                 </button>
                             `}
-                            <button class="btn btn-outline-secondary btn-lg">
-                                <i class="fas fa-heart"></i> Add to Wishlist
-                            </button>
                         </div>
                     </div>
                 </div>

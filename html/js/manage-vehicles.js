@@ -166,6 +166,14 @@ function statusBadge(status) {
 
 // --- Filter & Search ---
 document.addEventListener('DOMContentLoaded', function() {
+    // Auth Check
+    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+    if (!user || (JSON.parse(user).role !== 'admin')) {
+        alert('Akses hanya untuk admin!');
+        window.location.href = 'login.html';
+        return;
+    }
+    
     // Tunggu sebentar untuk memastikan semua elemen sudah dimuat
     setTimeout(() => {
         // Sinkronisasi data saat halaman dimuat
@@ -345,15 +353,6 @@ function showAlert(message, type = 'info') {
     document.body.appendChild(alertDiv);
     setTimeout(() => { if (alertDiv.parentNode) alertDiv.remove(); }, 4000);
 }
-
-// --- Auth Check ---
-document.addEventListener('DOMContentLoaded', function() {
-    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
-    if (!user || (JSON.parse(user).role !== 'admin')) {
-        alert('Akses hanya untuk admin!');
-        window.location.href = 'login.html';
-    }
-});
 
 // --- Logout ---
 function logout() {

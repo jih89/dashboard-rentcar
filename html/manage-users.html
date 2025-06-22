@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kelola Pengguna - Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="index.html"
+            ><img src="images/logo.png" alt="Trator"
+          /></a>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manage-vehicles.html">Kelola Mobil</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="manage-users.html">Kelola Pengguna</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="contact_section layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center" style="margin-bottom: 40px">
+            <h1 class="contact_taital">Manajemen Pengguna</h1>
+            <p class="gallery_text">Kelola data pengguna terdaftar</p>
+            <a href="admin-dashboard.html" class="btn btn-secondary mt-3"
+              ><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a
+            >
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+          "
+        >
+          <div class="card-body" style="padding: 30px">
+            <div class="row">
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchUser"
+                  placeholder="Cari pengguna berdasarkan nama atau email..."
+                  style="
+                    padding: 12px 15px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                  "
+                />
+              </div>
+              <div class="col-md-4">
+                <select
+                  class="form-control"
+                  id="filterRole"
+                  style="
+                    padding: 12px 15px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                  "
+                >
+                  <option value="">Semua Peran</option>
+                  <option value="customer">Customer</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button
+                  class="btn btn-secondary btn-block"
+                  onclick="resetFilters()"
+                  style="padding: 12px"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          "
+        >
+          <div class="card-body" style="padding: 30px">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Peran</th>
+                    <th>Tanggal Terdaftar</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div
+      class="modal fade"
+      id="editUserModal"
+      tabindex="-1"
+      aria-labelledby="editUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 15px">
+          <div
+            class="modal-header"
+            style="background-color: #fe5b29; color: white"
+          >
+            <h5 class="modal-title" id="editUserModalLabel">Edit Pengguna</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              style="color: white"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editUserForm">
+              <input type="hidden" id="editUserId" />
+              <div class="form-group">
+                <label for="editUserName">Nama</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editUserName"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editUserEmail">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="editUserEmail"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editUserRole">Peran</label>
+                <select class="form-control" id="editUserRole">
+                  <option value="customer">Customer</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="background-color: #fe5b29; border: none"
+              >
+                Simpan Perubahan
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/manage-users.js"></script>
+  </body>
+</html>

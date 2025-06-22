@@ -1,3 +1,39 @@
+// Fungsi untuk mendapatkan data user yang sedang login
+function getCurrentUser() {
+    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+}
+
+// Fungsi untuk update navbar berdasarkan status login
+function updateNavbar() {
+    const user = getCurrentUser();
+    const loginLink = document.querySelector('a[href="login.html"]');
+    
+    if (user && loginLink) {
+        const parentLi = loginLink.parentElement;
+        parentLi.innerHTML = `
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ${user.name}
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="${user.role === 'admin' ? 'admin-dashboard.html' : 'dashboard.html'}">Dashboard</a>
+                    <a class="dropdown-item" href="profile.html">Profil</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Fungsi untuk logout
+function logout() {
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+    window.location.href = 'index.html';
+}
+
 // Fungsi untuk memuat data dashboard
 document.addEventListener('DOMContentLoaded', function() {
     // Cek apakah user sudah login
@@ -15,6 +51,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load dashboard data
     loadDashboardData();
+    
+    // Tambahkan efek hover pada card
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Tambahkan efek hover pada tombol aksi cepat
+    const actionButtons = document.querySelectorAll('.btn-outline-primary');
+    actionButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#fe5b29';
+            this.style.color = 'white';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = 'transparent';
+            this.style.color = '#fe5b29';
+        });
+    });
 });
 
 // Fungsi untuk update informasi user di dashboard
@@ -127,35 +190,6 @@ function formatDate(dateString) {
         year: 'numeric'
     });
 }
-
-// Fungsi untuk menambahkan efek hover pada card
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.transition = 'transform 0.3s ease';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Tambahkan efek hover pada tombol aksi cepat
-    const actionButtons = document.querySelectorAll('.btn-outline-primary');
-    actionButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#fe5b29';
-            this.style.color = 'white';
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.backgroundColor = 'transparent';
-            this.style.color = '#fe5b29';
-        });
-    });
-});
 
 // Fungsi untuk refresh dashboard
 function refreshDashboard() {
