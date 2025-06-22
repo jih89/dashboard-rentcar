@@ -1,0 +1,116 @@
+/* Styling untuk Halaman Detail Mobil */
+
+.vehicle-detail-container {
+    padding: 40px 15px;
+}
+
+.vehicle-image-large img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+}
+
+.vehicle-info {
+    padding-left: 20px;
+}
+
+.vehicle-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.vehicle-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fe5b29;
+    margin-bottom: 20px;
+}
+
+.vehicle-description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.specifications {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.spec-item:last-child {
+    border-bottom: none;
+}
+
+.spec-item strong {
+    color: #333;
+}
+
+.features {
+    margin-top: 25px;
+}
+
+.features h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.features-list {
+    padding-left: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 20px;
+}
+
+.features-list li {
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.features-list .fa-check-circle {
+    color: #28a745;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.booking-action {
+    margin-top: 30px;
+}
+
+.booking-action .btn {
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .vehicle-info {
+        padding-left: 0;
+        margin-top: 20px;
+    }
+    .features-list {
+        columns: 1;
+    }
+    .vehicle-title {
+        font-size: 28px;
+    }
+    .vehicle-price {
+        font-size: 24px;
+    }
+} 

@@ -1,0 +1,8 @@
+/* Override Bootstrap navbar active styling to keep text white */
+.navbar-light .navbar-nav .nav-link.active {
+    color: #fefefd !important;
+}
+
+.navbar-light .navbar-nav .active > .nav-link {
+    color: #fefefd !important;
+} 

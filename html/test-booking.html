@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Booking - Trator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .test-card { background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .vehicle-item { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+        .vehicle-item:hover { background-color: #f8f9fa; }
+        .btn-test { margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Test Booking System</h2>
+                
+                <!-- Data Status -->
+                <div class="test-card p-4 mb-4">
+                    <h4>Data Status</h4>
+                    <div id="dataStatus"></div>
+                </div>
+                
+                <!-- Available Vehicles -->
+                <div class="test-card p-4 mb-4">
+                    <h4>Available Vehicles</h4>
+                    <div id="vehiclesList"></div>
+                </div>
+                
+                <!-- Test Actions -->
+                <div class="test-card p-4">
+                    <h4>Test Actions</h4>
+                    <button class="btn btn-primary btn-test" onclick="addTestData()">
+                        <i class="fas fa-plus"></i> Add Test Data to localStorage
+                    </button>
+                    <button class="btn btn-warning btn-test" onclick="clearLocalStorage()">
+                        <i class="fas fa-trash"></i> Clear localStorage
+                    </button>
+                    <button class="btn btn-info btn-test" onclick="refreshData()">
+                        <i class="fas fa-sync"></i> Refresh Data
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="goToVehicles()">
+                        <i class="fas fa-car"></i> Go to Vehicles Page
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        const VEHICLE_STORAGE_KEY = 'trator_vehicles';
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+        });
+        
+        // Refresh data display
+        function refreshData() {
+            displayDataStatus();
+            displayVehicles();
+        }
+        
+        // Display data status
+        function displayDataStatus() {
+            const statusDiv = document.getElementById('dataStatus');
+            
+            // Check localStorage
+            const local = localStorage.getItem(VEHICLE_STORAGE_KEY);
+            let localData = null;
+            if (local) {
+                try {
+                    localData = JSON.parse(local);
+                } catch (e) {
+                    localData = 'Error parsing data';
+                }
+            }
+            
+            // Check window.vehicles
+            const windowData = window.vehicles;
+            
+            statusDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>localStorage Status:</h5>
+                        <p><strong>Has Data:</strong> ${localData ? 'Yes' : 'No'}</p>
+                        <p><strong>Data Type:</strong> ${typeof localData}</p>
+                        <p><strong>Count:</strong> ${localData && Array.isArray(localData) ? localData.length : 'N/A'}</p>
+                        <p><strong>Raw Data:</strong> <code>${local ? local.substring(0, 100) + '...' : 'null'}</code></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>window.vehicles Status:</h5>
+                        <p><strong>Has Data:</strong> ${windowData ? 'Yes' : 'No'}</p>
+                        <p><strong>Data Type:</strong> ${typeof windowData}</p>
+                        <p><strong>Count:</strong> ${windowData && Array.isArray(windowData) ? windowData.length : 'N/A'}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Display vehicles
+        function displayVehicles() {
+            const vehiclesDiv = document.getElementById('vehiclesList');
+            
+            // Get vehicles from localStorage first, then fallback to data.js
+            let vehicles = [];
+            const local = localStorage.getItem(VEHICLE_STORAGE_KEY);
+            
+            if (local) {
+                try {
+                    const parsedData = JSON.parse(local);
+                    if (parsedData && Array.isArray(parsedData)) {
+                        vehicles = parsedData;
+                    }
+                } catch (e) {
+                    console.error('Error parsing localStorage data:', e);
+                }
+            }
+            
+            if (vehicles.length === 0 && window.vehicles) {
+                vehicles = window.vehicles;
+            }
+            
+            if (vehicles.length === 0) {
+                vehiclesDiv.innerHTML = '<p class="text-muted">No vehicles found. Add test data first.</p>';
+                return;
+            }
+            
+            let html = '';
+            vehicles.forEach(vehicle => {
+                html += `
+                    <div class="vehicle-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <strong>ID:</strong> ${vehicle.id} (${typeof vehicle.id})
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Name:</strong> ${vehicle.name}
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Available:</strong> ${vehicle.available || vehicle.status === 'available' ? 'Yes' : 'No'}
+                            </div>
+                            <div class="col-md-2">
+                                <strong>Price:</strong> Rp ${vehicle.price?.toLocaleString() || 'N/A'}
+                            </div>
+                            <div class="col-md-2">
+                                <a href="booking.html?id=${vehicle.id}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-book"></i> Test Booking
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            vehiclesDiv.innerHTML = html;
+        }
+        
+        // Add test data to localStorage
+        function addTestData() {
+            if (window.vehicles && window.vehicles.length > 0) {
+                try {
+                    localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(window.vehicles));
+                    alert('Test data added to localStorage successfully!');
+                    refreshData();
+                } catch (e) {
+                    alert('Error adding test data: ' + e.message);
+                }
+            } else {
+                alert('No vehicle data available in data.js');
+            }
+        }
+        
+        // Clear localStorage
+        function clearLocalStorage() {
+            if (confirm('Are you sure you want to clear localStorage?')) {
+                localStorage.removeItem(VEHICLE_STORAGE_KEY);
+                alert('localStorage cleared!');
+                refreshData();
+            }
+        }
+        
+        // Go to vehicles page
+        function goToVehicles() {
+            window.location.href = 'vehicles.html';
+        }
+    </script>
+</body>
+</html> 

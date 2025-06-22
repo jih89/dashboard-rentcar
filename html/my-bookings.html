@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Trator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/my-bookings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- header section start -->
+    <div class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/logo.png" alt="Trator" style="height: 50px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="vehicles.html">Vehicles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="services.html">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="client.html">Client</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item" id="loginNavItem">
+                            <a class="nav-link" href="login.html">Login</a>
+                        </li>
+                        <li class="nav-item dropdown" id="userNavItem" style="display: none;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> <span id="userName">User</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                                <a class="dropdown-item active" href="my-bookings.html"><i class="fas fa-calendar"></i> My Bookings</a>
+                                <a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- header section end -->
+
+    <!-- my bookings section start -->
+    <div class="my_bookings_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page_header">
+                        <h2><i class="fas fa-calendar-alt"></i> My Bookings</h2>
+                        <p>Kelola dan pantau pemesanan mobil Anda</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="stat_card">
+                        <div class="stat_icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat_content">
+                            <h4 id="pendingCount">0</h4>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat_card">
+                        <div class="stat_icon active">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="stat_content">
+                            <h4 id="activeCount">0</h4>
+                            <p>Aktif</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat_card">
+                        <div class="stat_icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat_content">
+                            <h4 id="completedCount">0</h4>
+                            <p>Selesai</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat_card">
+                        <div class="stat_icon total">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat_content">
+                            <h4 id="totalCount">0</h4>
+                            <p>Total</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="search_filter_container">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchBooking" placeholder="Cari berdasarkan nama mobil...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="searchBookings()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control" id="statusFilter" onchange="filterBookings()">
+                        <option value="">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Dikonfirmasi</option>
+                        <option value="active">Aktif</option>
+                        <option value="completed">Selesai</option>
+                        <option value="cancelled">Dibatalkan</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Bookings List -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="bookings_container">
+                        <div id="bookingsList">
+                            <!-- Bookings will be loaded here -->
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div id="emptyState" style="display: none;">
+                            <div class="empty_state">
+                                <i class="fas fa-calendar-times"></i>
+                                <h4>Belum Ada Pemesanan</h4>
+                                <p>Anda belum memiliki pemesanan mobil. Mulai sewa mobil sekarang!</p>
+                                <a href="vehicles.html" class="btn btn-primary">
+                                    <i class="fas fa-car"></i> Sewa Mobil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- my bookings section end -->
+
+    <!-- footer section start -->
+    <div class="footer_section layout_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">ADDRESS</h4>
+                    <p class="footer_text">Jl. Sudirman No. 123, Jakarta Pusat, Indonesia</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">PHONE</h4>
+                    <p class="footer_text">+62 812-3456-7890</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">EMAIL</h4>
+                    <p class="footer_text">info@trator.com</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">FOLLOW US</h4>
+                    <div class="social_links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer section end -->
+
+    <!-- Scripts -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/my-bookings.js"></script>
+</body>
+</html> 

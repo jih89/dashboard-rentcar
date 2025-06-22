@@ -1,0 +1,392 @@
+/* Booking Page Styling */
+
+.booking_section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+.booking_form_container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 40px;
+    margin-bottom: 30px;
+}
+
+.booking_header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.booking_header h2 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.booking_header h2 i {
+    color: #fe5b29;
+    margin-right: 10px;
+}
+
+.booking_header p {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Vehicle Preview */
+.vehicle_preview {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+}
+
+.vehicle_card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.vehicle_image {
+    flex-shrink: 0;
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.vehicle_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vehicle_info {
+    flex: 1;
+}
+
+.vehicle_info h4 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.vehicle_info p {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.vehicle_price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fe5b29;
+}
+
+/* Form Sections */
+.form_section {
+    margin-bottom: 40px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #fe5b29;
+}
+
+.form_section h5 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.form_section h5 i {
+    color: #fe5b29;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #fe5b29;
+    box-shadow: 0 0 0 0.2rem rgba(254, 91, 41, 0.25);
+}
+
+.form-control:invalid {
+    border-color: #dc3545;
+}
+
+.form-text {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Booking Summary */
+.booking_summary {
+    background: linear-gradient(135deg, #fe5b29 0%, #ff6b35 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.booking_summary h5 {
+    color: white;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.booking_summary h5 i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.summary_details {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.summary_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.summary_item:last-child {
+    border-bottom: none;
+}
+
+.summary_item.total {
+    font-weight: 700;
+    font-size: 18px;
+    border-top: 2px solid rgba(255,255,255,0.3);
+    border-bottom: none;
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
+/* Form Actions */
+.form_actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+    border-top: 2px solid #f8f9fa;
+}
+
+.btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: #fe5b29;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #e54a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(254, 91, 41, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+/* Sidebar */
+.booking_sidebar {
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar_card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.sidebar_card h5 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar_card h5 i {
+    color: #fe5b29;
+    margin-right: 10px;
+}
+
+.info_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info_list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f8f9fa;
+    display: flex;
+    align-items: center;
+    color: #666;
+}
+
+.info_list li:last-child {
+    border-bottom: none;
+}
+
+.info_list li i {
+    color: #fe5b29;
+    margin-right: 10px;
+    width: 16px;
+}
+
+.contact_info p {
+    margin-bottom: 10px;
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+
+.contact_info p i {
+    color: #fe5b29;
+    margin-right: 10px;
+    width: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking_form_container {
+        padding: 20px;
+    }
+    
+    .vehicle_card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .vehicle_image {
+        width: 100px;
+        height: 70px;
+    }
+    
+    .form_actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .booking_sidebar {
+        position: static;
+        margin-top: 30px;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #fe5b29;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error States */
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.error-message i {
+    margin-right: 5px;
+}
+
+.form-control.error {
+    border-color: #dc3545;
+}
+
+/* Success States */
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.success-message i {
+    margin-right: 5px;
+}
+
+.form-control.success {
+    border-color: #28a745;
+} 

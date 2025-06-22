@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Mobil - Trator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/booking.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- header section start -->
+    <div class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/logo.png" alt="Trator" style="height: 50px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="vehicles.html">Vehicles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="services.html">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="client.html">Client</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item" id="loginNavItem">
+                            <a class="nav-link" href="login.html">Login</a>
+                        </li>
+                        <li class="nav-item dropdown" id="userNavItem" style="display: none;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> <span id="userName">User</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                                <a class="dropdown-item" href="my-bookings.html"><i class="fas fa-calendar"></i> My Bookings</a>
+                                <a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- header section end -->
+
+    <!-- booking section start -->
+    <div class="booking_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="booking_form_container">
+                        <div class="booking_header">
+                            <h2><i class="fas fa-calendar-plus"></i> Form Pemesanan Mobil</h2>
+                            <p>Lengkapi data pemesanan Anda di bawah ini</p>
+                        </div>
+
+                        <!-- Vehicle Preview -->
+                        <div class="vehicle_preview" id="vehiclePreview">
+                            <div class="vehicle_card">
+                                <div class="vehicle_image">
+                                    <img id="vehicleImage" src="" alt="Vehicle">
+                                </div>
+                                <div class="vehicle_info">
+                                    <h4 id="vehicleName">Loading...</h4>
+                                    <p id="vehicleDetails">Loading...</p>
+                                    <div class="vehicle_price">
+                                        <span id="vehiclePrice">Rp 0</span> / hari
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booking Form -->
+                        <form id="bookingForm" class="booking_form">
+                            <div class="form_section">
+                                <h5><i class="fas fa-calendar-alt"></i> Tanggal Sewa</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="startDate">Tanggal Mulai *</label>
+                                            <input type="date" class="form-control" id="startDate" required>
+                                            <small class="form-text text-muted">Minimal hari ini</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="endDate">Tanggal Selesai *</label>
+                                            <input type="date" class="form-control" id="endDate" required>
+                                            <small class="form-text text-muted">Harus setelah tanggal mulai</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form_section">
+                                <h5><i class="fas fa-user"></i> Data Peminjam</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="customerName">Nama Lengkap *</label>
+                                            <input type="text" class="form-control" id="customerName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="customerPhone">Nomor Telepon *</label>
+                                            <input type="tel" class="form-control" id="customerPhone" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customerEmail">Email *</label>
+                                    <input type="email" class="form-control" id="customerEmail" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customerAddress">Alamat *</label>
+                                    <textarea class="form-control" id="customerAddress" rows="3" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form_section">
+                                <h5><i class="fas fa-file-alt"></i> Informasi Tambahan</h5>
+                                <div class="form-group">
+                                    <label for="bookingNotes">Catatan (Opsional)</label>
+                                    <textarea class="form-control" id="bookingNotes" rows="3" placeholder="Catatan khusus atau permintaan tambahan..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Booking Summary -->
+                            <div class="booking_summary" id="bookingSummary" style="display: none;">
+                                <h5><i class="fas fa-calculator"></i> Ringkasan Pemesanan</h5>
+                                <div class="summary_details">
+                                    <div class="summary_item">
+                                        <span>Durasi Sewa:</span>
+                                        <span id="summaryDuration">0 hari</span>
+                                    </div>
+                                    <div class="summary_item">
+                                        <span>Harga per Hari:</span>
+                                        <span id="summaryPricePerDay">Rp 0</span>
+                                    </div>
+                                    <div class="summary_item total">
+                                        <span>Total Pembayaran:</span>
+                                        <span id="summaryTotal">Rp 0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form_actions">
+                                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="submitBooking">
+                                    <i class="fas fa-check"></i> Konfirmasi Pemesanan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="booking_sidebar">
+                        <div class="sidebar_card">
+                            <h5><i class="fas fa-info-circle"></i> Informasi Penting</h5>
+                            <ul class="info_list">
+                                <li><i class="fas fa-clock"></i> Minimal booking 1 hari</li>
+                                <li><i class="fas fa-calendar"></i> Maksimal booking 30 hari</li>
+                                <li><i class="fas fa-credit-card"></i> Pembayaran di lokasi</li>
+                                <li><i class="fas fa-id-card"></i> Bawa KTP & SIM</li>
+                                <li><i class="fas fa-clock"></i> Pickup jam 08:00-17:00</li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar_card">
+                            <h5><i class="fas fa-phone"></i> Butuh Bantuan?</h5>
+                            <p>Hubungi customer service kami:</p>
+                            <div class="contact_info">
+                                <p><i class="fas fa-phone"></i> 0812-3456-7890</p>
+                                <p><i class="fas fa-envelope"></i> cs@trator.com</p>
+                                <p><i class="fas fa-clock"></i> 08:00 - 20:00 WIB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- booking section end -->
+
+    <!-- footer section start -->
+    <div class="footer_section layout_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">ADDRESS</h4>
+                    <p class="footer_text">Jl. Sudirman No. 123, Jakarta Pusat, Indonesia</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">PHONE</h4>
+                    <p class="footer_text">+62 812-3456-7890</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">EMAIL</h4>
+                    <p class="footer_text">info@trator.com</p>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h4 class="address">FOLLOW US</h4>
+                    <div class="social_links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer section end -->
+
+    <!-- Scripts -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html> 

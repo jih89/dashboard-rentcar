@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Manajemen Mobil - Trator</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <!-- vehicles css -->
+      <link rel="stylesheet" type="text/css" href="css/vehicles.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!-- font css -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   </head>
+   <body>
+      <!-- header section start -->
+      <div class="header_section">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <a class="navbar-brand"href="index.html"><img src="images/logo.png"></a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav ml-auto">
+                     <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="vehicles.html">Vehicles</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                     </li>
+                     <li class="nav-item">
+                        <div class="dropdown">
+                           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Admin
+                           </a>
+                           <div class="dropdown-menu">
+                              <a class="dropdown-item" href="admin-dashboard.html">Dashboard</a>
+                              <a class="dropdown-item" href="manage-vehicles.html">Kelola Mobil</a>
+                              <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                           </div>
+                        </div>
+                     </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                  </form>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <!-- header section end -->
+      
+      <div class="call_text_main">
+         <div class="container">
+            <div class="call_taital">
+               <div class="call_text"><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><span class="padding_left_15">Location</span></a></div>
+               <div class="call_text"><a href="#"><i class="fa fa-phone" aria-hidden="true"></i><span class="padding_left_15">(+71) 8522369417</span></a></div>
+               <div class="call_text"><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i><span class="padding_left_15">demo@gmail.com</span></a></div>
+            </div>
+         </div>
+      </div>
+
+      <!-- manage vehicles section start -->
+      <div class="contact_section layout_padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12 text-center" style="margin-bottom: 40px;">
+                  <h1 class="contact_taital" style="font-size: 36px; font-weight: bold; color: #333; margin-bottom: 15px;">Manajemen Data Mobil</h1>
+                  <p class="gallery_text" style="font-size: 18px; color: #666; line-height: 1.5;">Kelola data mobil Trator</p>
+                  <div style="margin-top: 20px;">
+                     <a href="admin-dashboard.html" class="btn btn-secondary" style="padding: 10px 20px; border-radius: 8px; text-decoration: none;">
+                        <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="container">
+            <div class="contact_section_2">
+               <!-- Action Buttons -->
+               <div class="row mb-4">
+                  <div class="col-md-12">
+                     <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                           <div class="d-flex justify-content-between align-items-center">
+                              <h4 style="color: #333; margin-bottom: 0;"><i class="fa fa-car"></i> Data Mobil</h4>
+                              <div>
+                                 <button class="btn btn-warning mr-2" onclick="resetToDefaultData()" style="padding: 10px 15px; border-radius: 8px;">
+                                    <i class="fa fa-refresh"></i> Reset ke Default
+                                 </button>
+                                 <button class="btn btn-success mr-2" onclick="exportDataToJSON()" style="padding: 10px 15px; border-radius: 8px;">
+                                    <i class="fa fa-download"></i> Export JSON
+                                 </button>
+                                 <button class="btn btn-info mr-2" onclick="importDataFromJSON()" style="padding: 10px 15px; border-radius: 8px;">
+                                    <i class="fa fa-upload"></i> Import JSON
+                                 </button>
+                                 <button class="btn btn-primary" style="background-color: #fe5b29; border: none; padding: 10px 20px; border-radius: 8px;" onclick="showAddVehicleModal()">
+                                    <i class="fa fa-plus"></i> Tambah Mobil Baru
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Search and Filter -->
+               <div class="row mb-4">
+                  <div class="col-md-12">
+                     <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                           <div class="row">
+                              <div class="col-md-4">
+                                 <input type="text" class="form-control" id="searchVehicle" placeholder="Cari mobil..." style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                              </div>
+                              <div class="col-md-3">
+                                 <select class="form-control" id="filterBrand" style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                    <option value="">Semua Brand</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Suzuki">Suzuki</option>
+                                    <option value="Daihatsu">Daihatsu</option>
+                                    <option value="Mitsubishi">Mitsubishi</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Mercedes">Mercedes</option>
+                                    <option value="Audi">Audi</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Wuling">Wuling</option>
+                                    <option value="Jeep">Jeep</option>
+                                 </select>
+                              </div>
+                              <div class="col-md-3">
+                                 <select class="form-control" id="filterType" style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                    <option value="">Semua Tipe</option>
+                                    <option value="sedan">Sedan</option>
+                                    <option value="suv">SUV</option>
+                                    <option value="mpv">MPV</option>
+                                    <option value="hatchback">Hatchback</option>
+                                 </select>
+                              </div>
+                              <div class="col-md-2">
+                                 <button class="btn btn-secondary btn-block" onclick="resetFilters()" style="padding: 12px; border-radius: 8px;">
+                                    <i class="fa fa-refresh"></i> Reset
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Vehicles Table -->
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="card-body" style="padding: 30px;">
+                           <div class="table-responsive">
+                              <table class="table table-hover" id="vehiclesTable">
+                                 <thead class="thead-light">
+                                    <tr>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">No</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Gambar</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Nama Mobil</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Brand</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Tipe</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Tahun</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Harga/Hari</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Status</th>
+                                       <th style="border: none; padding: 15px; color: #333; font-weight: 600;">Aksi</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody id="vehiclesTableBody">
+                                    <!-- Data akan diisi oleh JavaScript -->
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div id="noDataMessage" class="text-center" style="display: none; padding: 40px;">
+                              <i class="fa fa-car" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                              <h4 style="color: #666;">Tidak ada data mobil</h4>
+                              <p style="color: #999;">Klik "Tambah Mobil Baru" untuk menambahkan data</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- manage vehicles section end -->
+
+      <!-- Add/Edit Vehicle Modal -->
+      <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="border-radius: 15px;">
+               <div class="modal-header" style="background-color: #fe5b29; color: white; border-radius: 15px 15px 0 0;">
+                  <h5 class="modal-title" id="vehicleModalLabel">Tambah Mobil Baru</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body" style="padding: 30px;">
+                  <form id="vehicleForm">
+                     <input type="hidden" id="vehicleId" name="id">
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehicleName" style="color: #333; font-weight: 600; margin-bottom: 8px;">Nama Mobil</label>
+                              <input type="text" class="form-control" id="vehicleName" name="name" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehicleBrand" style="color: #333; font-weight: 600; margin-bottom: 8px;">Brand</label>
+                              <select class="form-control" id="vehicleBrand" name="brand" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                 <option value="">Pilih Brand</option>
+                                 <option value="Toyota">Toyota</option>
+                                 <option value="Honda">Honda</option>
+                                 <option value="Suzuki">Suzuki</option>
+                                 <option value="Daihatsu">Daihatsu</option>
+                                 <option value="Mitsubishi">Mitsubishi</option>
+                                 <option value="Nissan">Nissan</option>
+                                 <option value="BMW">BMW</option>
+                                 <option value="Mercedes">Mercedes</option>
+                                 <option value="Audi">Audi</option>
+                                 <option value="Ford">Ford</option>
+                                 <option value="Hyundai">Hyundai</option>
+                                 <option value="Wuling">Wuling</option>
+                                 <option value="Jeep">Jeep</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehicleType" style="color: #333; font-weight: 600; margin-bottom: 8px;">Tipe</label>
+                              <select class="form-control" id="vehicleType" name="type" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                 <option value="">Pilih Tipe</option>
+                                 <option value="sedan">Sedan</option>
+                                 <option value="suv">SUV</option>
+                                 <option value="mpv">MPV</option>
+                                 <option value="hatchback">Hatchback</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehicleYear" style="color: #333; font-weight: 600; margin-bottom: 8px;">Tahun</label>
+                              <input type="number" class="form-control" id="vehicleYear" name="year" min="1990" max="2024" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehiclePrice" style="color: #333; font-weight: 600; margin-bottom: 8px;">Harga per Hari (Rp)</label>
+                              <input type="number" class="form-control" id="vehiclePrice" name="price" min="0" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 20px;">
+                              <label for="vehicleStatus" style="color: #333; font-weight: 600; margin-bottom: 8px;">Status</label>
+                              <select class="form-control" id="vehicleStatus" name="status" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                 <option value="available">Tersedia</option>
+                                 <option value="rented">Disewa</option>
+                                 <option value="maintenance">Maintenance</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="vehicleImage" style="color: #333; font-weight: 600; margin-bottom: 8px;">URL Gambar</label>
+                        <input type="url" class="form-control" id="vehicleImage" name="image" placeholder="https://example.com/image.jpg" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px;">
+                     </div>
+                     <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="vehicleDescription" style="color: #333; font-weight: 600; margin-bottom: 8px;">Deskripsi</label>
+                        <textarea class="form-control" id="vehicleDescription" name="description" rows="3" style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; resize: vertical;"></textarea>
+                     </div>
+                  </form>
+               </div>
+               <div class="modal-footer" style="border-top: 1px solid #e9ecef; padding: 20px 30px;">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" style="padding: 10px 20px; border-radius: 8px;">Batal</button>
+                  <button type="button" class="btn btn-primary" onclick="saveVehicle()" style="background-color: #fe5b29; border: none; padding: 10px 20px; border-radius: 8px;">Simpan</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 15px;">
+               <div class="modal-header" style="background-color: #dc3545; color: white; border-radius: 15px 15px 0 0;">
+                  <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body" style="padding: 30px;">
+                  <div class="text-center">
+                     <i class="fa fa-exclamation-triangle" style="font-size: 60px; color: #dc3545; margin-bottom: 20px;"></i>
+                     <h4 style="color: #333; margin-bottom: 15px;">Hapus Mobil?</h4>
+                     <p style="color: #666;">Apakah Anda yakin ingin menghapus mobil <strong id="deleteVehicleName"></strong>?</p>
+                     <p style="color: #999; font-size: 14px;">Tindakan ini tidak dapat dibatalkan.</p>
+                  </div>
+               </div>
+               <div class="modal-footer" style="border-top: 1px solid #e9ecef; padding: 20px 30px;">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" style="padding: 10px 20px; border-radius: 8px;">Batal</button>
+                  <button type="button" class="btn btn-danger" onclick="confirmDelete()" style="padding: 10px 20px; border-radius: 8px;">Hapus</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- footer section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-3 col-sm-6">
+                  <div class="footer_logo"><img src="images/footer-logo.png"></div>
+                  <h1 class="footer_taital">Contact Info</h1>
+                  <p class="footer_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable</p>
+               </div>
+               <div class="col-lg-3 col-sm-6">
+                  <h1 class="footer_taital">Useful Link</h1>
+                  <p class="footer_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable</p>
+               </div>
+               <div class="col-lg-3 col-sm-6">
+                  <h1 class="footer_taital">News</h1>
+                  <p class="footer_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable</p>
+               </div>
+               <div class="col-lg-3 col-sm-6">
+                  <h1 class="footer_taital">Newsletter</h1>
+                  <input type="text" class="enter_email" placeholder="Enter Your Email" name="Enter Your Email">
+                  <div class="subscribe_bt"><a href="#">Subscribe</a></div>
+                  <div class="footer_social_icon">
+                     <ul>
+                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- footer section end -->
+      <!-- copyright section start -->
+      <div class="copyright_section">
+         <div class="container">
+            <p class="copyright_text">2020 All Rights Reserved. Design by <a href="https://html.design">Free html Templates</a></p>
+         </div>
+      </div>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      <!-- javascript --> 
+      <script src="js/owl.carousel.js"></script>
+      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+      <script src="js/manage-vehicles.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+   </body>
+</html> 
