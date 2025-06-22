@@ -13,6 +13,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update navbar admin
     updateAdminNavbar();
     
+    // Inisialisasi dropdown Bootstrap secara manual
+    var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(dd) {
+        dd.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var menu = this.nextElementSibling;
+            if (menu) menu.classList.toggle('show');
+        });
+    });
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+            menu.classList.remove('show');
+        });
+    });
+    
     // Refresh data setiap 30 detik
     setInterval(loadDashboardData, 30000);
     
@@ -234,11 +250,20 @@ function updateVehicleStatus(vehicles) {
 
 // Fungsi untuk update navbar admin
 function updateAdminNavbar() {
-    const currentUser = getCurrentUser();
-    const adminDropdown = document.querySelector('.dropdown-toggle');
-    
-    if (currentUser && adminDropdown) {
-        adminDropdown.textContent = currentUser.name || 'Admin';
+    const user = getCurrentUser();
+    const adminDropdownNav = document.getElementById('adminDropdownNav');
+    if (user && adminDropdownNav) {
+        adminDropdownNav.innerHTML = `
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ${user.name || 'Admin'}
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="admin-dashboard.html">Dashboard</a>
+                    <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        `;
     }
 }
 

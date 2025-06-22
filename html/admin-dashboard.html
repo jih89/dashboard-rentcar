@@ -69,28 +69,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="register.html">Register</a>
               </li>
-              <li class="nav-item">
-                <div class="dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Admin
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="admin-dashboard.html"
-                      >Dashboard</a
-                    >
-                    <a class="dropdown-item" href="#" onclick="logout()"
-                      >Logout</a
-                    >
-                  </div>
-                </div>
-              </li>
+              <li class="nav-item" id="adminDropdownNav"></li>
             </ul>
             <form class="form-inline my-2 my-lg-0"></form>
           </div>
@@ -566,8 +545,7 @@
     <div class="copyright_section">
       <div class="container">
         <p class="copyright_text">
-          2020 All Rights Reserved. Design by
-          <a href="https://html.design">Free html Templates</a>
+          2020 All Rights Reserved.
         </p>
       </div>
     </div>
